@@ -2,7 +2,7 @@
 
 A command line utility that runs Claude Code CLI in a loop to work tasks one by one from a Prompt.md
 
-⚠️ The `./start_claude_loop.sh` runs claude code with the [`--dangerously-skip-permissions`]([url](https://code.claude.com/docs/en/settings#permission-settings)) flag enabled. Please proceed with caution.
+⚠️ The `./start_agent_loop.sh` runs claude code with the [`--dangerously-skip-permissions`]([url](https://code.claude.com/docs/en/settings#permission-settings)) flag enabled. Please proceed with caution.
 
 ## Project Goals
 1. Can be cloned down and run with minimal setup
@@ -15,7 +15,7 @@ A command line utility that runs Claude Code CLI in a loop to work tasks one by 
 bash <(curl -fsSL https://raw.githubusercontent.com/BrandonMathis/ralph-loop/main/install.sh)
 ```
 
-This downloads `start_claude_loop.sh` and `Prompt.md` into your current directory.
+This downloads `start_agent_loop.sh` and `Prompt.md` into your current directory.
 
 ## Usage
 1. Edit `Prompt.md` with your tasks
@@ -23,12 +23,12 @@ This downloads `start_claude_loop.sh` and `Prompt.md` into your current director
 
 **Human Assisted**
 ```
-./start_claude_loop.sh
+./start_agent_loop.sh
 ```
 
 **Fully Automated**
 ```
-./start_claude_loop.sh --dangerous
+./start_agent_loop.sh --dangerous
 ``` 
 
 When running this script with the `--dangerous` flag you are giving claude code cli [full permission to do whatever it pleases via the `--dangerously-skip-permissions`](https://code.claude.com/docs/en/settings#permission-settings) flag. Please proceed with caution and consider all possible risks.
