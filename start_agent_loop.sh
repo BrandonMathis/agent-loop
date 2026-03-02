@@ -3,6 +3,11 @@
 PROMPT_FILE="Prompt.md"
 STATUS_FILE="/tmp/AGENT_STATUS"
 TASK_FILE="/tmp/AGENT_TASK"
+DANGEROUS=false
+
+for arg in "$@"; do
+  [[ "$arg" == "--dangerous" ]] && DANGEROUS=true
+done
 
 rm -f "$STATUS_FILE" "$TASK_FILE"
 
@@ -35,7 +40,9 @@ while true; do
     -e "s|\${TASK_FILE}|${TASK_FILE}|g" \
     "$PROMPT_FILE")
 
-  claude --dangerously-skip-permissions <<< "$EXPANDED_PROMPT" &
+  CLAUDE_FLAGS=()
+  $DANGEROUS && CLAUDE_FLAGS+=(--dangerously-skip-permissions)
+  claude "${CLAUDE_FLAGS[@]}" <<< "$EXPANDED_PROMPT" &
   AGENT_PID=$!
 
   # Watcher: kill agent when a task or status file signals done
