@@ -19,18 +19,16 @@ This downloads `start_claude_loop.sh` and `Prompt.md` into your current director
 
 ## Usage
 1. Edit `Prompt.md` with your tasks
-2. Run `./start_agent_loop.sh`
+2. Run agent loop script
 
-## Options
-
-| Flag | Description |
-|------|-------------|
-| `--dangerous` | Run Claude with `--dangerously-skip-permissions`, bypassing all permission prompts |
-
-```bash
-# Normal mode (permission prompts enabled)
-./start_agent_loop.sh
-
-# Skip all permission prompts
-./start_agent_loop.sh --dangerous
+**Human Assisted**
 ```
+./start_claude_loop.sh
+```
+
+**Fully Automated**
+```
+./start_claude_loop.sh --dangerous
+``` 
+
+When running this script with the `--dangerous` flag you are giving claude code cli [full permission to do whatever it pleases via the `--dangerously-skip-permissions`](https://code.claude.com/docs/en/settings#permission-settings) flag. Please proceed with caution and consider all possible risks.
