@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+
+require "agent_loop"
+
+task_file = "tasks.yml"
+dangerous = false
+
+ARGV.each do |arg|
+  case arg
+  when "--dangerous"
+    dangerous = true
+  when "--help", "-h"
+    puts "Usage: agent-loop [options]"
+    puts ""
+    puts "Options:"
+    puts "  --dangerous   Run claude with --dangerously-skip-permissions"
+    puts "  --file FILE   Path to tasks YAML file (default: tasks.yml)"
+    puts "  --help, -h    Show this help message"
+    exit 0
+  when "--file"
+    # handled below
+  else
+    # Check if previous arg was --file
+    prev_index = ARGV.index(arg) - 1
+    if prev_index >= 0 && ARGV[prev_index] == "--file"
+      task_file = arg
+    end
+  end
+end
+
+# Simpler --file parsing
+if (idx = ARGV.index("--file")) && ARGV[idx + 1]
+  task_file = ARGV[idx + 1]
+end
+
+unless File.exist?(task_file)
+  puts "Error: #{task_file} not found."
+  puts "Create a tasks.yml file or specify one with --file PATH"
+  exit 1
+end
+
+runner = AgentLoop::Runner.new(task_file_path: task_file, dangerous: dangerous)
+runner.run

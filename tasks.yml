@@ -1,0 +1,11 @@
+prompt: |
+  You are a helpful coding assistant. Execute the task given to you.
+  Work carefully and verify your work before marking the task as done.
+
+tasks:
+  - description: Create a file called hello.rb
+    status: pending
+  - description: Put a "Hello World" program in hello.rb
+    status: pending
+  - description: Run hello.rb and verify it outputs "Hello World"
+    status: pending
