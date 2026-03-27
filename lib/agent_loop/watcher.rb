@@ -2,7 +2,7 @@
 
 module AgentLoop
   class Watcher
-    DONE = "done"
+    DONE = 'done'
 
     def initialize(status_file:, task_file:, poll_interval: 0.5)
       @status_file   = status_file
@@ -21,7 +21,7 @@ module AgentLoop
           break if @stop
 
           if done?(@task_file)
-            File.delete(@task_file) if File.exist?(@task_file)
+            FileUtils.rm_f(@task_file)
             callback.call(:task_done, agent_pid)
             break
           end

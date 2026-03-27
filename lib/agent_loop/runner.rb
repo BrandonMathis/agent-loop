@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require "digest"
-require "fileutils"
-require_relative "watcher"
+require 'digest'
+require 'fileutils'
+require_relative 'watcher'
 
 module AgentLoop
   class Runner
-    DONE = "done"
+    DONE = 'done'
 
     def initialize(options = {})
-      @dangerous     = options[:dangerous]     || options["dangerous"]     || false
-      @prompt_file   = options[:prompt]        || options["prompt"]        || "Prompt.md"
-      @poll_interval = (options[:poll_interval] || options["poll_interval"] || 0.5).to_f
+      @dangerous     = options[:dangerous]     || options['dangerous']     || false
+      @prompt_file   = options[:prompt]        || options['prompt']        || 'Prompt.md'
+      @poll_interval = (options[:poll_interval] || options['poll_interval'] || 0.5).to_f
     end
 
     def run
@@ -24,7 +24,7 @@ module AgentLoop
         abort "Error: #{@prompt_file} not found." unless File.exist?(@prompt_file)
 
         FileUtils.rm_f(@status_file)
-        puts "Running agent loop iteration..."
+        puts 'Running agent loop iteration...'
 
         run_iteration(expand_prompt)
 
@@ -45,17 +45,17 @@ module AgentLoop
 
     def trap_signals
       handler = proc do
-        puts "Interrupted. Stopping loop."
+        puts 'Interrupted. Stopping loop.'
         exit 1
       end
-      trap("INT",  handler)
-      trap("TERM", handler)
+      trap('INT',  handler)
+      trap('TERM', handler)
     end
 
     def expand_prompt
       File.read(@prompt_file)
-          .gsub("${STATUS_FILE}", @status_file)
-          .gsub("${TASK_FILE}",   @task_file)
+          .gsub('${STATUS_FILE}', @status_file)
+          .gsub('${TASK_FILE}',   @task_file)
     end
 
     def run_iteration(prompt_text)
@@ -63,13 +63,13 @@ module AgentLoop
       stdin_w.write(prompt_text)
       stdin_w.close
 
-      flags     = @dangerous ? ["--dangerously-skip-permissions"] : []
-      agent_pid = spawn("claude", *flags, in: stdin_r)
+      flags     = @dangerous ? ['--dangerously-skip-permissions'] : []
+      agent_pid = spawn('claude', *flags, in: stdin_r)
       stdin_r.close
 
       watcher = Watcher.new(
-        status_file:   @status_file,
-        task_file:     @task_file,
+        status_file: @status_file,
+        task_file: @task_file,
         poll_interval: @poll_interval
       ).start(agent_pid) do |signal, pid|
         case signal
@@ -84,14 +84,14 @@ module AgentLoop
       _, status = Process.waitpid2(agent_pid)
       watcher.stop
 
-      if status.exitstatus == 0 && !status_done?
-        puts "Agent exited cleanly. Stopping loop."
-        exit 0
-      end
+      return unless status.exitstatus.zero? && !status_done?
+
+      puts 'Agent exited cleanly. Stopping loop.'
+      exit 0
     end
 
     def kill_process(pid)
-      Process.kill("TERM", pid)
+      Process.kill('TERM', pid)
     rescue Errno::ESRCH
       # Process already gone
     end
