@@ -13,7 +13,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"
-          bundler-cache: true
+      - run: bundle install
       - run: bundle exec rubocop
 
   test:
@@ -27,5 +27,5 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
-          bundler-cache: true
+      - run: bundle install
       - run: bundle exec rspec
