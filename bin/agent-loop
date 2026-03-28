@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "agent_loop"
+require 'agent_loop'
 
 AgentLoop::CLI.start(ARGV)
