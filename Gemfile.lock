@@ -64,7 +64,7 @@ DEPENDENCIES
   agent-loop!
   rspec (~> 3.12)
   rubocop (~> 1.50)
-  rubocop-rspec (~> 2.20)
+  rubocop-rspec (~> 3.0)
 
 BUNDLED WITH
    2.4.19
