@@ -30,3 +30,16 @@ This downloads `start_agent_loop.sh` and `Prompt.md` into your current directory
 ```
 
 By default this script runs claude code cli with [full permission to do whatever it pleases via the `--dangerously-skip-permissions`](https://code.claude.com/docs/en/settings#permission-settings) flag. Please proceed with caution and consider all possible risks. Pass `--interactive` to opt out and run in the default (permission-prompting) mode.
+
+### Choosing an agent
+
+Pass `--agent <name>` to pick which CLI agent runs the loop. Supported values:
+
+- `claude` (default) — uses the Claude Code CLI.
+- `pi` — uses the Pi CLI (`pi`). Requires `pi` to be installed and on your `PATH`.
+
+```
+./start_agent_loop.sh --agent pi
+```
+
+The automated/interactive modes above apply to both agents. In automated mode, `claude` is invoked with `--dangerously-skip-permissions` and `pi` is invoked with `--yolo`.

@@ -5,10 +5,21 @@ LOOP_ID=$(echo "$PWD" | shasum | cut -c1-8)
 STATUS_FILE="/tmp/AGENT_STATUS_${LOOP_ID}"
 TASK_FILE="/tmp/AGENT_TASK_${LOOP_ID}"
 DANGEROUS=true
+AGENT="claude"
 
-for arg in "$@"; do
-  [[ "$arg" == "--interactive" ]] && DANGEROUS=false
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --interactive) DANGEROUS=false; shift ;;
+    --agent) AGENT="$2"; shift 2 ;;
+    --agent=*) AGENT="${1#*=}"; shift ;;
+    *) shift ;;
+  esac
 done
+
+case "$AGENT" in
+  claude|pi) ;;
+  *) echo "❌ Error: unknown agent '$AGENT' (expected: claude, pi)"; exit 1 ;;
+esac
 
 rm -f "$STATUS_FILE" "$TASK_FILE"
 
@@ -41,9 +52,16 @@ while true; do
     -e "s|\${TASK_FILE}|${TASK_FILE}|g" \
     "$PROMPT_FILE")
 
-  CLAUDE_FLAGS=()
-  $DANGEROUS && CLAUDE_FLAGS+=(--dangerously-skip-permissions)
-  claude "${CLAUDE_FLAGS[@]}" <<< "$EXPANDED_PROMPT" &
+  AGENT_FLAGS=()
+  case "$AGENT" in
+    claude)
+      $DANGEROUS && AGENT_FLAGS+=(--dangerously-skip-permissions)
+      ;;
+    pi)
+      $DANGEROUS && AGENT_FLAGS+=(--yolo)
+      ;;
+  esac
+  "$AGENT" "${AGENT_FLAGS[@]}" <<< "$EXPANDED_PROMPT" &
   AGENT_PID=$!
 
   # Watcher: kill agent when a task or status file signals done
