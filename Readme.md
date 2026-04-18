@@ -10,7 +10,7 @@ A command line utility that runs Claude Code CLI in a loop to work tasks one by 
 ## Install
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/BrandonMathis/agent-loop/main/old_runner/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/BrandonMathis/agent-loop/main/install.sh)
 ```
 
 This downloads `start_agent_loop.sh` and `Prompt.md` into your current directory.
