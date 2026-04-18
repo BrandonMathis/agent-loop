@@ -4,10 +4,10 @@ PROMPT_FILE="Prompt.md"
 LOOP_ID=$(echo "$PWD" | shasum | cut -c1-8)
 STATUS_FILE="/tmp/AGENT_STATUS_${LOOP_ID}"
 TASK_FILE="/tmp/AGENT_TASK_${LOOP_ID}"
-DANGEROUS=false
+DANGEROUS=true
 
 for arg in "$@"; do
-  [[ "$arg" == "--dangerous" ]] && DANGEROUS=true
+  [[ "$arg" == "--interactive" ]] && DANGEROUS=false
 done
 
 rm -f "$STATUS_FILE" "$TASK_FILE"
